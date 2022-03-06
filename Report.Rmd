@@ -1,0 +1,106 @@
+---
+title: "Project"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Library Imports
+```{r libraries, warning=FALSE, message=FALSE}
+#install.packages("adegenet")
+library(adegenet)
+library(ggplot2)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+## Import Dataset
+
+```{r datasetImport}
+week_gene <- read.csv("data/weeks_genotypes.csv")
+head(week_gene)
+```
+
+## Determine Heterozygosity
+```{r heterozygosity}
+alleles <- week_gene[,4:ncol(week_gene)]
+genind_alleles <- df2genind(alleles,sep="/",NA.char="NA/NA")
+heterozygosity_results <- summary(genind_alleles)
+heterozygosity_results
+```
+
+## Heterozygosity by Population
+```{r popheterozygosity}
+pop_geind_alleles <- seppop(df2genind(alleles,sep="/",NA.char="NA/NA", pop=week_gene$Pop))
+pop_geind_alleles
+```
+
+## Group by Population
+```{r popsummary}
+MtBuller <- summary(pop_geind_alleles$MtBuller)
+MtHiggenbotham <- summary(pop_geind_alleles$MtHigginbotham)
+MtBuller
+```
+
+## Create dataframes for comparing observed and expected
+```{r compare}
+MtBullerDf <- data.frame(unlist(MtBuller$Hobs), unlist(MtBuller$Hexp))
+names(MtBullerDf) <- c("Hobs", "Hexp")
+MtHiggenbothamDf <- data.frame(unlist(MtHiggenbotham$Hobs), unlist(MtHiggenbotham$Hexp))
+names(MtHiggenbothamDf) <- c("Hobs", "Hexp")
+head(MtBullerDf)
+```
+
+## Dataframes Pivoted on Observation Type
+```{r pivotCols}
+category <- rep(c("Observed", "Expected"), each=length(MtBullerDf$Hobs))
+MtBullerPivot <- data.frame(c(seq(1, 24, 1), seq(1, 24, 1)), c(MtBullerDf$Hobs, MtBullerDf$Hexp), category)
+MtHiggenbothamPivot <- data.frame(c(seq(1, 24, 1), seq(1, 24, 1)), c(MtHiggenbothamDf$Hobs, MtHiggenbothamDf$Hexp), category)
+names(MtBullerPivot) <- c("Location", "Heterozygosity", "Type")
+names(MtHiggenbothamPivot) <- c("Location", "Heterozygosity", "Type")
+head(MtBullerPivot)
+```
+
+## Boxplot Comparison MtBuller
+```{r boxplotbuller}
+MtBullerPivot %>% 
+  ggplot(aes(x=Type, y=Heterozygosity)) + geom_boxplot(na.rm=T) + coord_flip()
+```
+
+## Boxplot Comparison MtHiggenbotham
+```{r boxplothiggenbotham}
+MtHiggenbothamPivot %>% 
+  ggplot(aes(x=Type, y=Heterozygosity)) + geom_boxplot(na.rm=T) + coord_flip()
+```
+
+## Barplot Comparison MtBuller
+```{r barplotbuller}
+MtBullerPivot %>%
+  ggplot(aes(x=Location, y=Heterozygosity, fill=Type)) + geom_bar(stat="identity", position = "identity", alpha=.3, na.rm=T)
+```
+
+## Barplot Comparison MtHiggenbotham
+```{r barplothiggenbotham}
+MtHiggenbothamPivot %>%
+  ggplot(aes(x=Location, y=Heterozygosity, fill=Type)) + geom_bar(stat="identity", position = "identity", alpha=.3, na.rm=T)
+```
+
+## Scatterplot Comparison of Observed between MtBuller and MtHiggenbotham
+```{r scatterobs}
+combindedPop <- rbind(MtBullerDf, MtHiggenbothamDf)
+combindedPop$Population <- rep(c("MtBuller", "MtHiggenbotham"), each=24)
+combindedPop$Location <- c(seq(1, 24, 1), seq(1, 24, 1))
+combindedPop %>% 
+  ggplot(aes(x=Location, y=Hobs, color=Population)) + geom_point()
+```
+
+## Scatterplot Comparison of Expected between MtBuller and MtHiggenbotham
+```{r scatterexp}
+combindedPop %>% 
+  ggplot(aes(x=Location, y=Hexp, color=Population)) + geom_point()
+```
