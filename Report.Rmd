@@ -72,11 +72,34 @@ head(MtBullerPivot)
 MtBullerPivot %>% 
   ggplot(aes(x=Type, y=Heterozygosity)) + geom_boxplot(na.rm=T) + coord_flip()
 ```
+```{r}
+MtBullerPivot %>% 
+  ggplot(aes(x=Type, y=Heterozygosity, fill=Type))+
+  geom_boxplot(color="grey", alpha=0.8, na.rm = TRUE)+
+  geom_violin(alpha=0.5, na.rm = TRUE)+
+  scale_fill_brewer(palette = "Pastel1")+
+  theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
+  labs(title = "MtBuller Observation Type and Heterozygosity",
+       x="Type",
+       y="Heterozygosity")
+```
 
 ## Boxplot Comparison MtHiggenbotham
 ```{r boxplothiggenbotham}
 MtHiggenbothamPivot %>% 
   ggplot(aes(x=Type, y=Heterozygosity)) + geom_boxplot(na.rm=T) + coord_flip()
+```
+```{r}
+MtHiggenbothamPivot %>% 
+  #mutate(Heterozygosity=as.factor(Heterozygosity)) %>% 
+  ggplot(aes(x=Type, y=Heterozygosity, fill=Type))+
+  geom_boxplot(color="grey", alpha=0.8, na.rm = TRUE)+
+  geom_violin(alpha=0.5, na.rm = TRUE)+
+  scale_fill_brewer(palette = "Pastel1")+
+  theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
+  labs(title = "MtHiggenbotham Observation Type and Heterozygosity",
+       x="Type",
+       y="Heterozygosity")
 ```
 
 ## Barplot Comparison MtBuller
