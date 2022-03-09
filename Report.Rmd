@@ -17,6 +17,7 @@ library(ggplot2)
 library(tidyverse)
 library(here)
 library(janitor)
+library("gapminder")
 ```
 
 ## Import Dataset
@@ -104,3 +105,54 @@ combindedPop %>%
 combindedPop %>% 
   ggplot(aes(x=Location, y=Hexp, color=Population)) + geom_point()
 ```
+```{r}
+MtBullerDf %>%
+  mutate(Hdiff= Hobs - Hexp) %>%
+  arrange(desc(Hdiff))
+```
+
+```{r}
+MtBullerPivot %>%
+  filter(Location %in% c("2","6","1","7","14")) %>%
+  ggplot(aes(x=Type, y = Heterozygosity, fill = Type))+ 
+  geom_col(alpha=0.8)+
+  facet_grid(.~Location)+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
+  labs(title = "Top 5 Microsatellite Loci with Higher than Expected Heterozygosity (MtBuller)",
+       x="Type",
+       y="Heterozygosity")
+```
+```{r}
+MtHiggenbothamDf %>%
+  mutate(Hdiff= Hobs - Hexp) %>%
+  arrange(desc(Hdiff))
+```
+```{r}
+MtHiggenbothamPivot %>%
+  filter(Location %in% c("2","17","5","9","4")) %>%
+  ggplot(aes(x=Type, y = Heterozygosity, fill = Type))+ 
+  geom_col(alpha=0.8)+
+  facet_grid(.~Location)+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
+  labs(title = "Top 5 Microsatellite Loci with Higher than Expected Heterozygosity (MtHiggenbotham)",
+       x="Type",
+       y="Heterozygosity")
+```
+
+# Most Heterozygous Locus
+```{r}
+MtBullerDf %>%
+  mutate(Heteroz = abs(Hobs - 0.5)) %>%
+  arrange(Heteroz)
+```
+```{r}
+MtHiggenbothamDf %>%
+  mutate(Heteroz = abs(Hobs - 0.5)) %>%
+  arrange(Heteroz)
+```
+
+
+
+
