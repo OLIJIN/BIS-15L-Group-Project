@@ -876,7 +876,7 @@ MtBuller_Heterozygosity %>%
 MtBuller_Heterozygosity %>% 
   ggplot(aes(x=Locus , y=Year, fill=Hobs))+
   geom_tile()+
-  scale_fill_gradient2(low="yellow", mid="red2", high="white",midpoint = 0.5)+
+  scale_fill_gradient2(low="yellow", mid="red2", high="navy",midpoint = 0.31)+
   theme(axis.text.x = element_text(angle = 60, hjust = 1))+
   theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
   labs( title = "Heatmap of MtBuller Heterozygosity",
