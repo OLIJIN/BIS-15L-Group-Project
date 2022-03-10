@@ -1119,7 +1119,7 @@ server &lt;- function(input, output, session) {
     MtBuller_Heterozygosity %&gt;% 
       filter(Locus==input$x) %&gt;% 
       ggplot(aes(y=Hobs, x=Year)) +
-      geom_col(color=&quot;black&quot;, fill= &quot;cyan3&quot;, alpha=0.6) + 
+      geom_line(color=&quot;blue&quot;) + 
       theme_light(base_size = 18) + 
       theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
       labs(x = &quot;Year&quot;,
