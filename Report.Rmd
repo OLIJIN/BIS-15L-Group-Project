@@ -1,7 +1,9 @@
 ---
-title: "Project"
+title: "BIS 15L Project"
+author: "Qianyu Jin & Zayna Siddiqi"
 output:
-  html_document: default
+  html_document: 
+    keep_md: yes
   pdf_document: default
 ---
 
@@ -72,10 +74,6 @@ head(MtBullerPivot)
 ```
 
 ## Boxplot Comparison MtBuller
-```{r boxplotbuller}
-MtBullerPivot %>% 
-  ggplot(aes(x=Type, y=Heterozygosity)) + geom_boxplot(na.rm=T) + coord_flip()
-```
 ```{r}
 MtBullerPivot %>% 
   ggplot(aes(x=Type, y=Heterozygosity, fill=Type))+
@@ -89,10 +87,6 @@ MtBullerPivot %>%
 ```
 
 ## Boxplot Comparison MtHiggenbotham
-```{r boxplothiggenbotham}
-MtHiggenbothamPivot %>% 
-  ggplot(aes(x=Type, y=Heterozygosity)) + geom_boxplot(na.rm=T) + coord_flip()
-```
 ```{r}
 MtHiggenbothamPivot %>% 
   #mutate(Heterozygosity=as.factor(Heterozygosity)) %>% 
@@ -179,7 +173,7 @@ MtHiggenbothamDf %>%
   mutate(Heteroz = abs(Hobs - 0.5)) %>%
   arrange(Heteroz)
 ```
- How many samples do you have from each year?
+## How many samples do you have from each year?
 ```{r}
 week_gene%>%
   filter(Pop == "MtBuller")%>%
@@ -271,6 +265,35 @@ MtBuller_Heterozygosity <- rbind(MtBullerDf_2010,MtBullerDf_2011,MtBullerDf_2012
 MtBuller_Heterozygosity
 ```
 
+## Graphing MtBuller Heterozygosity by Years
+```{r}
+MtBuller_Heterozygosity %>% 
+  mutate(Year=as.factor(Year)) %>%
+  select(Hobs,Year,Locus) %>% 
+  ggplot(aes(x = Year, y = Hobs, fill=Year))+
+  geom_violin(alpha=1.0, na.rm = TRUE)+
+  geom_boxplot(color = "grey", alpha=0.6, na.rm = TRUE)+
+  scale_fill_brewer(palette = "Pastel1")+
+  theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
+  labs(title = "Heterozygosity by Years",
+       x="Year",
+       y="Heterozygosity")
+```
+## Heatmap of MtBuller Heterozygosity by Locus
+```{r}
+MtBuller_Heterozygosity %>% 
+  ggplot(aes(x=Locus , y=Year, fill=Hobs))+
+  geom_tile()+
+  scale_fill_gradient2(low="yellow", mid="red2", high="white",midpoint = 0.5)+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  theme(plot.title = element_text(size = rel(1), face='bold', hjust = 0.5)) +
+  labs( title = "Heatmap of MtBuller Heterozygosity",
+        x = NULL,
+        y = NULL)
+```
+
+
+## Shiny App
 ```{r}
 library(shiny)
 
