@@ -254,6 +254,8 @@ combindedPop %>%
 
 ![](Report_files/figure-html/scatterexp-1.png)<!-- -->
 
+## Top 5 Microsatellite Loci with Higher than Expected Heterozygosity (MtBuller)
+
 ```r
 MtBullerDf %>%
   mutate(Hdiff= Hobs - Hexp) %>%
@@ -303,6 +305,8 @@ MtBullerPivot %>%
 ```
 
 ![](Report_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+## Top 5 Microsatellite Loci with Higher than Expected Heterozygosity (MtHiggenbotham)
 
 ```r
 MtHiggenbothamDf %>%
@@ -440,7 +444,7 @@ week_gene%>%
 ## 5 2014 103
 ## 6 2015 138
 ```
-
+## Further Data Cleaning 
 Mt Buller Heterozygosity in 2010.
 
 ```r
@@ -694,6 +698,7 @@ MtBullerDf_2015
 ## 23 LOC23 0.2028986 0.2346933 2015
 ## 24 LOC24 0.2627737 0.2722574 2015
 ```
+## Combined Data for Analysis
 
 ```r
 MtBuller_Heterozygosity <- rbind(MtBullerDf_2010,MtBullerDf_2011,MtBullerDf_2012,MtBullerDf_2013,MtBullerDf_2014,MtBullerDf_2015)
@@ -880,7 +885,6 @@ MtBuller_Heterozygosity %>%
 ```
 
 ![](Report_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
-
 
 ## Shiny App
 
