@@ -126,6 +126,8 @@ combindedPop %>%
 combindedPop %>% 
   ggplot(aes(x=Location, y=Hexp, color=Population)) + geom_point()
 ```
+
+## Top 5 Microsatellite Loci with Higher than Expected Heterozygosity (MtBuller)
 ```{r}
 MtBullerDf %>%
   mutate(Hdiff= Hobs - Hexp) %>%
@@ -144,6 +146,8 @@ MtBullerPivot %>%
        x="Type",
        y="Heterozygosity")
 ```
+
+## Top 5 Microsatellite Loci with Higher than Expected Heterozygosity (MtHiggenbotham)
 ```{r}
 MtHiggenbothamDf %>%
   mutate(Hdiff= Hobs - Hexp) %>%
@@ -180,7 +184,7 @@ week_gene%>%
   mutate(Year=as.factor(Year))%>%
   count(Year)
 ```
-
+## Further Data Cleaning 
 Mt Buller Heterozygosity in 2010.
 ```{r}
 week_gene_mtbuller <- filter(week_gene,Pop=="MtBuller")
@@ -260,6 +264,7 @@ year2015<-rep(2015,times=24)
 MtBullerDf_2015$Year <- year2015
 MtBullerDf_2015
 ```
+## Combined Data for Analysis
 ```{r}
 MtBuller_Heterozygosity <- rbind(MtBullerDf_2010,MtBullerDf_2011,MtBullerDf_2012,MtBullerDf_2013,MtBullerDf_2014,MtBullerDf_2015)
 MtBuller_Heterozygosity
@@ -291,7 +296,6 @@ MtBuller_Heterozygosity %>%
         x = NULL,
         y = NULL)
 ```
-
 
 ## Shiny App
 ```{r}
