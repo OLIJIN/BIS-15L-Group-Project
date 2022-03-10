@@ -357,7 +357,10 @@ library(ggplot2)
 library(tidyverse)
 library(here)
 library(janitor)
-library(&quot;gapminder&quot;)</code></pre>
+library(&quot;gapminder&quot;)
+library(data.table)
+library(shiny)
+library(shinydashboard)</code></pre>
 </div>
 <div id="import-dataset" class="section level2">
 <h2>Import Dataset</h2>
@@ -681,6 +684,417 @@ combindedPop %&gt;%
 ## LOC12 0.00000000 0.0000000 0.50000000
 ## LOC16 0.00000000 0.0000000 0.50000000
 ## LOC18 0.00000000 0.0000000 0.50000000</code></pre>
+<p>How many samples do you have from each year?</p>
+<pre class="r"><code>week_gene%&gt;%
+  filter(Pop == &quot;MtBuller&quot;)%&gt;%
+  mutate(Year=as.factor(Year))%&gt;%
+  count(Year)</code></pre>
+<pre><code>##   Year   n
+## 1 2010  29
+## 2 2011  40
+## 3 2012  43
+## 4 2013  67
+## 5 2014 103
+## 6 2015 138</code></pre>
+<p>Mt Buller Heterozygosity in 2010.</p>
+<pre class="r"><code>week_gene_mtbuller &lt;- filter(week_gene,Pop==&quot;MtBuller&quot;)
+week_gene_2010 &lt;- filter(week_gene_mtbuller,Year==2010)
+alleles_2010 &lt;- week_gene_2010[,4:ncol(week_gene)]
+pop_geind_alleles_2010 &lt;- seppop(df2genind(alleles_2010,sep=&quot;/&quot;,NA.char=&quot;NA/NA&quot;, pop=week_gene_2010$Pop))
+MtBuller_2010 &lt;- summary(pop_geind_alleles_2010$MtBuller)
+MtBullerDf_2010 &lt;- data.frame(unlist(MtBuller_2010$Hobs), unlist(MtBuller_2010$Hexp))
+names(MtBullerDf_2010) &lt;- c(&quot;Hobs&quot;, &quot;Hexp&quot;)
+MtBullerDf_2010 &lt;- tibble::rownames_to_column(MtBullerDf_2010, &quot;Locus&quot;)
+year2010&lt;-rep(2010,times=24)
+MtBullerDf_2010$Year &lt;- year2010
+MtBullerDf_2010</code></pre>
+<pre><code>##    Locus       Hobs       Hexp Year
+## 1   LOC1 0.22222222 0.19753086 2010
+## 2   LOC2 0.52631579 0.49861496 2010
+## 3   LOC3 0.03571429 0.03507653 2010
+## 4   LOC4 0.51851852 0.51371742 2010
+## 5   LOC5 0.03448276 0.03388823 2010
+## 6   LOC6 0.00000000 0.00000000 2010
+## 7   LOC7 0.00000000 0.00000000 2010
+## 8   LOC8 0.00000000 0.00000000 2010
+## 9   LOC9 0.00000000 0.00000000 2010
+## 10 LOC10 0.40740741 0.36556927 2010
+## 11 LOC11 0.00000000 0.00000000 2010
+## 12 LOC12 0.00000000 0.00000000 2010
+## 13 LOC13 0.31034483 0.26218787 2010
+## 14 LOC14 0.51724138 0.49762188 2010
+## 15 LOC15 0.37037037 0.34567901 2010
+## 16 LOC16 0.27586207 0.36623068 2010
+## 17 LOC17 0.00000000 0.00000000 2010
+## 18 LOC18 0.00000000 0.00000000 2010
+## 19 LOC19 0.00000000 0.00000000 2010
+## 20 LOC20 0.00000000 0.00000000 2010
+## 21 LOC21 0.00000000 0.00000000 2010
+## 22 LOC22 0.13793103 0.13020214 2010
+## 23 LOC23 0.03703704 0.03635117 2010
+## 24 LOC24 0.00000000 0.00000000 2010</code></pre>
+<p>Mt Buller Heterozygosity in 2011.</p>
+<pre class="r"><code>week_gene_2011 &lt;- filter(week_gene_mtbuller,Year==2011)
+alleles_2011 &lt;- week_gene_2011[,4:ncol(week_gene)]
+pop_geind_alleles_2011 &lt;- seppop(df2genind(alleles_2011,sep=&quot;/&quot;,NA.char=&quot;NA/NA&quot;, pop=week_gene_2011$Pop))
+MtBuller_2011 &lt;- summary(pop_geind_alleles_2011$MtBuller)
+MtBullerDf_2011 &lt;- data.frame(unlist(MtBuller_2011$Hobs), unlist(MtBuller_2011$Hexp))
+names(MtBullerDf_2011) &lt;- c(&quot;Hobs&quot;, &quot;Hexp&quot;)
+MtBullerDf_2011 &lt;- tibble::rownames_to_column(MtBullerDf_2011, &quot;Locus&quot;)
+year2011&lt;-rep(2011,times=24)
+MtBullerDf_2011$Year &lt;- year2011
+MtBullerDf_2011</code></pre>
+<pre><code>##    Locus       Hobs       Hexp Year
+## 1   LOC1 0.17500000 0.15968750 2011
+## 2   LOC2 0.62162162 0.50000000 2011
+## 3   LOC3 0.07692308 0.07396450 2011
+## 4   LOC4 0.52500000 0.48468750 2011
+## 5   LOC5 0.02500000 0.02468750 2011
+## 6   LOC6 0.00000000 0.00000000 2011
+## 7   LOC7 0.05000000 0.04875000 2011
+## 8   LOC8 0.00000000 0.00000000 2011
+## 9   LOC9 0.00000000 0.00000000 2011
+## 10 LOC10 0.53846154 0.49474030 2011
+## 11 LOC11 0.00000000 0.00000000 2011
+## 12 LOC12 0.00000000 0.00000000 2011
+## 13 LOC13 0.30769231 0.32610125 2011
+## 14 LOC14 0.46153846 0.49704142 2011
+## 15 LOC15 0.35897436 0.29454306 2011
+## 16 LOC16 0.41025641 0.44444444 2011
+## 17 LOC17 0.00000000 0.04996713 2011
+## 18 LOC18 0.00000000 0.00000000 2011
+## 19 LOC19 0.02564103 0.02531229 2011
+## 20 LOC20 0.05128205 0.26397107 2011
+## 21 LOC21 0.00000000 0.00000000 2011
+## 22 LOC22 0.17948718 0.16337936 2011
+## 23 LOC23 0.02564103 0.02531229 2011
+## 24 LOC24 0.00000000 0.00000000 2011</code></pre>
+<p>Mt Buller Heterozygosity in 2012.</p>
+<pre class="r"><code>week_gene_2012 &lt;- filter(week_gene_mtbuller,Year==2012)
+alleles_2012 &lt;- week_gene_2012[,4:ncol(week_gene)]
+pop_geind_alleles_2012 &lt;- seppop(df2genind(alleles_2012,sep=&quot;/&quot;,NA.char=&quot;NA/NA&quot;, pop=week_gene_2012$Pop))
+MtBuller_2012 &lt;- summary(pop_geind_alleles_2012$MtBuller)
+MtBullerDf_2012 &lt;- data.frame(unlist(MtBuller_2012$Hobs), unlist(MtBuller_2012$Hexp))
+names(MtBullerDf_2012) &lt;- c(&quot;Hobs&quot;, &quot;Hexp&quot;)
+MtBullerDf_2012 &lt;- tibble::rownames_to_column(MtBullerDf_2012, &quot;Locus&quot;)
+year2012&lt;-rep(2012,times=24)
+MtBullerDf_2012$Year &lt;- year2012
+MtBullerDf_2012</code></pre>
+<pre><code>##    Locus       Hobs       Hexp Year
+## 1   LOC1 0.13953488 0.12979989 2012
+## 2   LOC2 0.70731707 0.59399167 2012
+## 3   LOC3 0.28571429 0.25821995 2012
+## 4   LOC4 0.58139535 0.57193077 2012
+## 5   LOC5 0.34883721 0.30665224 2012
+## 6   LOC6 0.18604651 0.16873986 2012
+## 7   LOC7 0.30232558 0.26744186 2012
+## 8   LOC8 0.30232558 0.27203894 2012
+## 9   LOC9 0.30232558 0.26473770 2012
+## 10 LOC10 0.65116279 0.61898323 2012
+## 11 LOC11 0.27906977 0.29150892 2012
+## 12 LOC12 0.30232558 0.25662520 2012
+## 13 LOC13 0.53488372 0.50676041 2012
+## 14 LOC14 0.62790698 0.55246079 2012
+## 15 LOC15 0.51162791 0.44104922 2012
+## 16 LOC16 0.30232558 0.31719849 2012
+## 17 LOC17 0.27906977 0.28637101 2012
+## 18 LOC18 0.30232558 0.25662520 2012
+## 19 LOC19 0.25581395 0.22579773 2012
+## 20 LOC20 0.18604651 0.17063277 2012
+## 21 LOC21 0.06976744 0.06733369 2012
+## 22 LOC22 0.27906977 0.27257977 2012
+## 23 LOC23 0.13953488 0.13223364 2012
+## 24 LOC24 0.11627907 0.11060032 2012</code></pre>
+<p>Mt Buller Heterozygosity in 2013.</p>
+<pre class="r"><code>week_gene_2013 &lt;- filter(week_gene_mtbuller,Year==2013)
+alleles_2013 &lt;- week_gene_2013[,4:ncol(week_gene)]
+pop_geind_alleles_2013 &lt;- seppop(df2genind(alleles_2013,sep=&quot;/&quot;,NA.char=&quot;NA/NA&quot;, pop=week_gene_2013$Pop))
+MtBuller_2013 &lt;- summary(pop_geind_alleles_2013$MtBuller)
+MtBullerDf_2013 &lt;- data.frame(unlist(MtBuller_2013$Hobs), unlist(MtBuller_2013$Hexp))
+names(MtBullerDf_2013) &lt;- c(&quot;Hobs&quot;, &quot;Hexp&quot;)
+MtBullerDf_2013 &lt;- tibble::rownames_to_column(MtBullerDf_2013, &quot;Locus&quot;)
+year2013&lt;-rep(2013,times=24)
+MtBullerDf_2013$Year &lt;- year2013
+MtBullerDf_2013</code></pre>
+<pre><code>##    Locus       Hobs       Hexp Year
+## 1   LOC1 0.08955224 0.08554244 2013
+## 2   LOC2 0.69696970 0.61994949 2013
+## 3   LOC3 0.23880597 0.27756739 2013
+## 4   LOC4 0.58208955 0.61784362 2013
+## 5   LOC5 0.44776119 0.40064602 2013
+## 6   LOC6 0.31343284 0.26431276 2013
+## 7   LOC7 0.34328358 0.30964580 2013
+## 8   LOC8 0.32835821 0.34551125 2013
+## 9   LOC9 0.34328358 0.30730675 2013
+## 10 LOC10 0.53030303 0.59882920 2013
+## 11 LOC11 0.38805970 0.36400089 2013
+## 12 LOC12 0.32835821 0.29405213 2013
+## 13 LOC13 0.40298507 0.43294720 2013
+## 14 LOC14 0.56716418 0.54811762 2013
+## 15 LOC15 0.52238806 0.50879929 2013
+## 16 LOC16 0.22388060 0.26431276 2013
+## 17 LOC17 0.28358209 0.28959679 2013
+## 18 LOC18 0.28787879 0.26756198 2013
+## 19 LOC19 0.19402985 0.20037870 2013
+## 20 LOC20 0.13432836 0.12530630 2013
+## 21 LOC21 0.17910448 0.16306527 2013
+## 22 LOC22 0.25373134 0.23357095 2013
+## 23 LOC23 0.10447761 0.10035643 2013
+## 24 LOC24 0.11940299 0.16540432 2013</code></pre>
+<p>Mt Buller Heterozygosity in 2014.</p>
+<pre class="r"><code>week_gene_2014 &lt;- filter(week_gene_mtbuller,Year==2014)
+alleles_2014 &lt;- week_gene_2014[,4:ncol(week_gene)]
+pop_geind_alleles_2014 &lt;- seppop(df2genind(alleles_2014,sep=&quot;/&quot;,NA.char=&quot;NA/NA&quot;, pop=week_gene_2014$Pop))
+MtBuller_2014 &lt;- summary(pop_geind_alleles_2014$MtBuller)
+MtBullerDf_2014 &lt;- data.frame(unlist(MtBuller_2014$Hobs), unlist(MtBuller_2014$Hexp))
+names(MtBullerDf_2014) &lt;- c(&quot;Hobs&quot;, &quot;Hexp&quot;)
+MtBullerDf_2014 &lt;- tibble::rownames_to_column(MtBullerDf_2014, &quot;Locus&quot;)
+year2014&lt;-rep(2014,times=24)
+MtBullerDf_2014$Year &lt;- year2014
+MtBullerDf_2014</code></pre>
+<pre><code>##    Locus       Hobs       Hexp Year
+## 1   LOC1 0.09708738 0.09279857 2014
+## 2   LOC2 0.63725490 0.61385044 2014
+## 3   LOC3 0.19801980 0.20919518 2014
+## 4   LOC4 0.58823529 0.62336601 2014
+## 5   LOC5 0.45631068 0.44900556 2014
+## 6   LOC6 0.33009709 0.31294184 2014
+## 7   LOC7 0.32038835 0.29555095 2014
+## 8   LOC8 0.39215686 0.39609765 2014
+## 9   LOC9 0.38834951 0.35012725 2014
+## 10 LOC10 0.64077670 0.66410595 2014
+## 11 LOC11 0.40776699 0.37897069 2014
+## 12 LOC12 0.34951456 0.34687529 2014
+## 13 LOC13 0.54368932 0.54076727 2014
+## 14 LOC14 0.57281553 0.58294844 2014
+## 15 LOC15 0.50485437 0.52351777 2014
+## 16 LOC16 0.22330097 0.28207183 2014
+## 17 LOC17 0.29411765 0.26148597 2014
+## 18 LOC18 0.36893204 0.37741540 2014
+## 19 LOC19 0.18446602 0.16745216 2014
+## 20 LOC20 0.13592233 0.12668489 2014
+## 21 LOC21 0.12621359 0.13502686 2014
+## 22 LOC22 0.33980583 0.37307946 2014
+## 23 LOC23 0.21359223 0.19629560 2014
+## 24 LOC24 0.14563107 0.17188236 2014</code></pre>
+<p>Mt Buller Heterozygosity in 2015.</p>
+<pre class="r"><code>week_gene_2015 &lt;- filter(week_gene_mtbuller,Year==2015)
+alleles_2015 &lt;- week_gene_2015[,4:ncol(week_gene)]
+pop_geind_alleles_2015 &lt;- seppop(df2genind(alleles_2015,sep=&quot;/&quot;,NA.char=&quot;NA/NA&quot;, pop=week_gene_2015$Pop))
+MtBuller_2015 &lt;- summary(pop_geind_alleles_2015$MtBuller)
+MtBullerDf_2015 &lt;- data.frame(unlist(MtBuller_2015$Hobs), unlist(MtBuller_2015$Hexp))
+names(MtBullerDf_2015) &lt;- c(&quot;Hobs&quot;, &quot;Hexp&quot;)
+MtBullerDf_2015 &lt;- tibble::rownames_to_column(MtBullerDf_2015, &quot;Locus&quot;)
+year2015&lt;-rep(2015,times=24)
+MtBullerDf_2015$Year &lt;- year2015
+MtBullerDf_2015</code></pre>
+<pre><code>##    Locus      Hobs      Hexp Year
+## 1   LOC1 0.1086957 0.1037860 2015
+## 2   LOC2 0.6521739 0.6282031 2015
+## 3   LOC3 0.2608696 0.2947648 2015
+## 4   LOC4 0.5547445 0.6381267 2015
+## 5   LOC5 0.5182482 0.5354574 2015
+## 6   LOC6 0.3260870 0.3012760 2015
+## 7   LOC7 0.3722628 0.3806809 2015
+## 8   LOC8 0.4671533 0.5025574 2015
+## 9   LOC9 0.4744526 0.4837764 2015
+## 10 LOC10 0.7028986 0.6967549 2015
+## 11 LOC11 0.4275362 0.4584646 2015
+## 12 LOC12 0.3043478 0.3924596 2015
+## 13 LOC13 0.6231884 0.6111111 2015
+## 14 LOC14 0.6086957 0.6102184 2015
+## 15 LOC15 0.5144928 0.5807341 2015
+## 16 LOC16 0.2536232 0.2630487 2015
+## 17 LOC17 0.3333333 0.3441504 2015
+## 18 LOC18 0.4275362 0.4317108 2015
+## 19 LOC19 0.1811594 0.1894823 2015
+## 20 LOC20 0.2246377 0.2321729 2015
+## 21 LOC21 0.2101449 0.2729206 2015
+## 22 LOC22 0.4014599 0.4833236 2015
+## 23 LOC23 0.2028986 0.2346933 2015
+## 24 LOC24 0.2627737 0.2722574 2015</code></pre>
+<pre class="r"><code>MtBuller_Heterozygosity &lt;- rbind(MtBullerDf_2010,MtBullerDf_2011,MtBullerDf_2012,MtBullerDf_2013,MtBullerDf_2014,MtBullerDf_2015)
+MtBuller_Heterozygosity</code></pre>
+<pre><code>##     Locus       Hobs       Hexp Year
+## 1    LOC1 0.22222222 0.19753086 2010
+## 2    LOC2 0.52631579 0.49861496 2010
+## 3    LOC3 0.03571429 0.03507653 2010
+## 4    LOC4 0.51851852 0.51371742 2010
+## 5    LOC5 0.03448276 0.03388823 2010
+## 6    LOC6 0.00000000 0.00000000 2010
+## 7    LOC7 0.00000000 0.00000000 2010
+## 8    LOC8 0.00000000 0.00000000 2010
+## 9    LOC9 0.00000000 0.00000000 2010
+## 10  LOC10 0.40740741 0.36556927 2010
+## 11  LOC11 0.00000000 0.00000000 2010
+## 12  LOC12 0.00000000 0.00000000 2010
+## 13  LOC13 0.31034483 0.26218787 2010
+## 14  LOC14 0.51724138 0.49762188 2010
+## 15  LOC15 0.37037037 0.34567901 2010
+## 16  LOC16 0.27586207 0.36623068 2010
+## 17  LOC17 0.00000000 0.00000000 2010
+## 18  LOC18 0.00000000 0.00000000 2010
+## 19  LOC19 0.00000000 0.00000000 2010
+## 20  LOC20 0.00000000 0.00000000 2010
+## 21  LOC21 0.00000000 0.00000000 2010
+## 22  LOC22 0.13793103 0.13020214 2010
+## 23  LOC23 0.03703704 0.03635117 2010
+## 24  LOC24 0.00000000 0.00000000 2010
+## 25   LOC1 0.17500000 0.15968750 2011
+## 26   LOC2 0.62162162 0.50000000 2011
+## 27   LOC3 0.07692308 0.07396450 2011
+## 28   LOC4 0.52500000 0.48468750 2011
+## 29   LOC5 0.02500000 0.02468750 2011
+## 30   LOC6 0.00000000 0.00000000 2011
+## 31   LOC7 0.05000000 0.04875000 2011
+## 32   LOC8 0.00000000 0.00000000 2011
+## 33   LOC9 0.00000000 0.00000000 2011
+## 34  LOC10 0.53846154 0.49474030 2011
+## 35  LOC11 0.00000000 0.00000000 2011
+## 36  LOC12 0.00000000 0.00000000 2011
+## 37  LOC13 0.30769231 0.32610125 2011
+## 38  LOC14 0.46153846 0.49704142 2011
+## 39  LOC15 0.35897436 0.29454306 2011
+## 40  LOC16 0.41025641 0.44444444 2011
+## 41  LOC17 0.00000000 0.04996713 2011
+## 42  LOC18 0.00000000 0.00000000 2011
+## 43  LOC19 0.02564103 0.02531229 2011
+## 44  LOC20 0.05128205 0.26397107 2011
+## 45  LOC21 0.00000000 0.00000000 2011
+## 46  LOC22 0.17948718 0.16337936 2011
+## 47  LOC23 0.02564103 0.02531229 2011
+## 48  LOC24 0.00000000 0.00000000 2011
+## 49   LOC1 0.13953488 0.12979989 2012
+## 50   LOC2 0.70731707 0.59399167 2012
+## 51   LOC3 0.28571429 0.25821995 2012
+## 52   LOC4 0.58139535 0.57193077 2012
+## 53   LOC5 0.34883721 0.30665224 2012
+## 54   LOC6 0.18604651 0.16873986 2012
+## 55   LOC7 0.30232558 0.26744186 2012
+## 56   LOC8 0.30232558 0.27203894 2012
+## 57   LOC9 0.30232558 0.26473770 2012
+## 58  LOC10 0.65116279 0.61898323 2012
+## 59  LOC11 0.27906977 0.29150892 2012
+## 60  LOC12 0.30232558 0.25662520 2012
+## 61  LOC13 0.53488372 0.50676041 2012
+## 62  LOC14 0.62790698 0.55246079 2012
+## 63  LOC15 0.51162791 0.44104922 2012
+## 64  LOC16 0.30232558 0.31719849 2012
+## 65  LOC17 0.27906977 0.28637101 2012
+## 66  LOC18 0.30232558 0.25662520 2012
+## 67  LOC19 0.25581395 0.22579773 2012
+## 68  LOC20 0.18604651 0.17063277 2012
+## 69  LOC21 0.06976744 0.06733369 2012
+## 70  LOC22 0.27906977 0.27257977 2012
+## 71  LOC23 0.13953488 0.13223364 2012
+## 72  LOC24 0.11627907 0.11060032 2012
+## 73   LOC1 0.08955224 0.08554244 2013
+## 74   LOC2 0.69696970 0.61994949 2013
+## 75   LOC3 0.23880597 0.27756739 2013
+## 76   LOC4 0.58208955 0.61784362 2013
+## 77   LOC5 0.44776119 0.40064602 2013
+## 78   LOC6 0.31343284 0.26431276 2013
+## 79   LOC7 0.34328358 0.30964580 2013
+## 80   LOC8 0.32835821 0.34551125 2013
+## 81   LOC9 0.34328358 0.30730675 2013
+## 82  LOC10 0.53030303 0.59882920 2013
+## 83  LOC11 0.38805970 0.36400089 2013
+## 84  LOC12 0.32835821 0.29405213 2013
+## 85  LOC13 0.40298507 0.43294720 2013
+## 86  LOC14 0.56716418 0.54811762 2013
+## 87  LOC15 0.52238806 0.50879929 2013
+## 88  LOC16 0.22388060 0.26431276 2013
+## 89  LOC17 0.28358209 0.28959679 2013
+## 90  LOC18 0.28787879 0.26756198 2013
+## 91  LOC19 0.19402985 0.20037870 2013
+## 92  LOC20 0.13432836 0.12530630 2013
+## 93  LOC21 0.17910448 0.16306527 2013
+## 94  LOC22 0.25373134 0.23357095 2013
+## 95  LOC23 0.10447761 0.10035643 2013
+## 96  LOC24 0.11940299 0.16540432 2013
+## 97   LOC1 0.09708738 0.09279857 2014
+## 98   LOC2 0.63725490 0.61385044 2014
+## 99   LOC3 0.19801980 0.20919518 2014
+## 100  LOC4 0.58823529 0.62336601 2014
+## 101  LOC5 0.45631068 0.44900556 2014
+## 102  LOC6 0.33009709 0.31294184 2014
+## 103  LOC7 0.32038835 0.29555095 2014
+## 104  LOC8 0.39215686 0.39609765 2014
+## 105  LOC9 0.38834951 0.35012725 2014
+## 106 LOC10 0.64077670 0.66410595 2014
+## 107 LOC11 0.40776699 0.37897069 2014
+## 108 LOC12 0.34951456 0.34687529 2014
+## 109 LOC13 0.54368932 0.54076727 2014
+## 110 LOC14 0.57281553 0.58294844 2014
+## 111 LOC15 0.50485437 0.52351777 2014
+## 112 LOC16 0.22330097 0.28207183 2014
+## 113 LOC17 0.29411765 0.26148597 2014
+## 114 LOC18 0.36893204 0.37741540 2014
+## 115 LOC19 0.18446602 0.16745216 2014
+## 116 LOC20 0.13592233 0.12668489 2014
+## 117 LOC21 0.12621359 0.13502686 2014
+## 118 LOC22 0.33980583 0.37307946 2014
+## 119 LOC23 0.21359223 0.19629560 2014
+## 120 LOC24 0.14563107 0.17188236 2014
+## 121  LOC1 0.10869565 0.10378597 2015
+## 122  LOC2 0.65217391 0.62820311 2015
+## 123  LOC3 0.26086957 0.29476476 2015
+## 124  LOC4 0.55474453 0.63812670 2015
+## 125  LOC5 0.51824818 0.53545740 2015
+## 126  LOC6 0.32608696 0.30127599 2015
+## 127  LOC7 0.37226277 0.38068091 2015
+## 128  LOC8 0.46715328 0.50255741 2015
+## 129  LOC9 0.47445255 0.48377644 2015
+## 130 LOC10 0.70289855 0.69675488 2015
+## 131 LOC11 0.42753623 0.45846461 2015
+## 132 LOC12 0.30434783 0.39245957 2015
+## 133 LOC13 0.62318841 0.61111111 2015
+## 134 LOC14 0.60869565 0.61021844 2015
+## 135 LOC15 0.51449275 0.58073409 2015
+## 136 LOC16 0.25362319 0.26304873 2015
+## 137 LOC17 0.33333333 0.34415039 2015
+## 138 LOC18 0.42753623 0.43171078 2015
+## 139 LOC19 0.18115942 0.18948225 2015
+## 140 LOC20 0.22463768 0.23217286 2015
+## 141 LOC21 0.21014493 0.27292060 2015
+## 142 LOC22 0.40145985 0.48332357 2015
+## 143 LOC23 0.20289855 0.23469334 2015
+## 144 LOC24 0.26277372 0.27225745 2015</code></pre>
+<pre class="r"><code>library(shiny)
+
+ui &lt;- dashboardPage(
+  dashboardHeader(title = &quot;MtBuller Heterozygosity by Locus&quot;),
+  dashboardSidebar(disable = T),
+  dashboardBody(
+    fluidRow(
+      box(title = &quot;Plot Options&quot;, width = 15,
+      selectInput(&quot;x&quot;, &quot;Select Locus&quot;, choices = c(&quot;LOC1&quot;, &quot;LOC2&quot;, &quot;LOC3&quot;, &quot;LOC4&quot;, &quot;LOC5&quot;, &quot;LOC6&quot;, &quot;LOC7&quot;, &quot;LOC8&quot;, &quot;LOC9&quot;, &quot;LOC10&quot;, &quot;LOC11&quot;, &quot;LOC12&quot;, &quot;LOC13&quot;, &quot;LOC14&quot;, &quot;LOC15&quot;, &quot;LOC16&quot;, &quot;LOC17&quot;, &quot;LOC18&quot;, &quot;LOC19&quot;, &quot;LOC20&quot;, &quot;LOC21&quot;, &quot;LOC22&quot;, &quot;LOC23&quot;, &quot;LOC24&quot;), selected = &quot;LOC1&quot;),
+    box(title = &quot;MtBuller Heterozygosity&quot;, width = 7,
+    plotOutput(&quot;plot&quot;, width = &quot;700px&quot;, height = &quot;600px&quot;)
+    ) 
+    ) 
+    )) )
+
+ 
+
+server &lt;- function(input, output, session) {
+  output$plot &lt;- renderPlot({
+    MtBuller_Heterozygosity %&gt;% 
+      filter(Locus==input$x) %&gt;% 
+      ggplot(aes(y=Hobs, x=Year)) +
+      geom_col(color=&quot;black&quot;, fill= &quot;cyan3&quot;, alpha=0.6) + 
+      theme_light(base_size = 18) + 
+      theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+      labs(x = &quot;Year&quot;,
+          y = &quot;Heterozygosity&quot;)
+  })
+  session$onSessionEnded(stopApp)
+  }
+
+
+shinyApp(ui, server)</code></pre>
+<pre><code>## PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.</code></pre>
+<p><div style="width: 100% ; height: 400px ; text-align: center; box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;" class="muted well">Shiny applications not supported in static R Markdown documents</div></p>
 </div>
 
 

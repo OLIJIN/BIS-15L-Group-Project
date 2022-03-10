@@ -18,6 +18,9 @@ library(tidyverse)
 library(here)
 library(janitor)
 library("gapminder")
+library(data.table)
+library(shiny)
+library(shinydashboard)
 ```
 
 ## Import Dataset
@@ -28,6 +31,7 @@ head(week_gene)
 ```
 
 ## Determine Heterozygosity
+
 ```{r heterozygosity}
 alleles <- week_gene[,4:ncol(week_gene)]
 genind_alleles <- df2genind(alleles,sep="/",NA.char="NA/NA")
@@ -175,6 +179,138 @@ MtHiggenbothamDf %>%
   mutate(Heteroz = abs(Hobs - 0.5)) %>%
   arrange(Heteroz)
 ```
+ How many samples do you have from each year?
+```{r}
+week_gene%>%
+  filter(Pop == "MtBuller")%>%
+  mutate(Year=as.factor(Year))%>%
+  count(Year)
+```
+
+Mt Buller Heterozygosity in 2010.
+```{r}
+week_gene_mtbuller <- filter(week_gene,Pop=="MtBuller")
+week_gene_2010 <- filter(week_gene_mtbuller,Year==2010)
+alleles_2010 <- week_gene_2010[,4:ncol(week_gene)]
+pop_geind_alleles_2010 <- seppop(df2genind(alleles_2010,sep="/",NA.char="NA/NA", pop=week_gene_2010$Pop))
+MtBuller_2010 <- summary(pop_geind_alleles_2010$MtBuller)
+MtBullerDf_2010 <- data.frame(unlist(MtBuller_2010$Hobs), unlist(MtBuller_2010$Hexp))
+names(MtBullerDf_2010) <- c("Hobs", "Hexp")
+MtBullerDf_2010 <- tibble::rownames_to_column(MtBullerDf_2010, "Locus")
+year2010<-rep(2010,times=24)
+MtBullerDf_2010$Year <- year2010
+MtBullerDf_2010
+```
+Mt Buller Heterozygosity in 2011.
+```{r}
+week_gene_2011 <- filter(week_gene_mtbuller,Year==2011)
+alleles_2011 <- week_gene_2011[,4:ncol(week_gene)]
+pop_geind_alleles_2011 <- seppop(df2genind(alleles_2011,sep="/",NA.char="NA/NA", pop=week_gene_2011$Pop))
+MtBuller_2011 <- summary(pop_geind_alleles_2011$MtBuller)
+MtBullerDf_2011 <- data.frame(unlist(MtBuller_2011$Hobs), unlist(MtBuller_2011$Hexp))
+names(MtBullerDf_2011) <- c("Hobs", "Hexp")
+MtBullerDf_2011 <- tibble::rownames_to_column(MtBullerDf_2011, "Locus")
+year2011<-rep(2011,times=24)
+MtBullerDf_2011$Year <- year2011
+MtBullerDf_2011
+```
+Mt Buller Heterozygosity in 2012.
+```{r}
+week_gene_2012 <- filter(week_gene_mtbuller,Year==2012)
+alleles_2012 <- week_gene_2012[,4:ncol(week_gene)]
+pop_geind_alleles_2012 <- seppop(df2genind(alleles_2012,sep="/",NA.char="NA/NA", pop=week_gene_2012$Pop))
+MtBuller_2012 <- summary(pop_geind_alleles_2012$MtBuller)
+MtBullerDf_2012 <- data.frame(unlist(MtBuller_2012$Hobs), unlist(MtBuller_2012$Hexp))
+names(MtBullerDf_2012) <- c("Hobs", "Hexp")
+MtBullerDf_2012 <- tibble::rownames_to_column(MtBullerDf_2012, "Locus")
+year2012<-rep(2012,times=24)
+MtBullerDf_2012$Year <- year2012
+MtBullerDf_2012
+```
+Mt Buller Heterozygosity in 2013.
+```{r}
+week_gene_2013 <- filter(week_gene_mtbuller,Year==2013)
+alleles_2013 <- week_gene_2013[,4:ncol(week_gene)]
+pop_geind_alleles_2013 <- seppop(df2genind(alleles_2013,sep="/",NA.char="NA/NA", pop=week_gene_2013$Pop))
+MtBuller_2013 <- summary(pop_geind_alleles_2013$MtBuller)
+MtBullerDf_2013 <- data.frame(unlist(MtBuller_2013$Hobs), unlist(MtBuller_2013$Hexp))
+names(MtBullerDf_2013) <- c("Hobs", "Hexp")
+MtBullerDf_2013 <- tibble::rownames_to_column(MtBullerDf_2013, "Locus")
+year2013<-rep(2013,times=24)
+MtBullerDf_2013$Year <- year2013
+MtBullerDf_2013
+```
+Mt Buller Heterozygosity in 2014.
+```{r}
+week_gene_2014 <- filter(week_gene_mtbuller,Year==2014)
+alleles_2014 <- week_gene_2014[,4:ncol(week_gene)]
+pop_geind_alleles_2014 <- seppop(df2genind(alleles_2014,sep="/",NA.char="NA/NA", pop=week_gene_2014$Pop))
+MtBuller_2014 <- summary(pop_geind_alleles_2014$MtBuller)
+MtBullerDf_2014 <- data.frame(unlist(MtBuller_2014$Hobs), unlist(MtBuller_2014$Hexp))
+names(MtBullerDf_2014) <- c("Hobs", "Hexp")
+MtBullerDf_2014 <- tibble::rownames_to_column(MtBullerDf_2014, "Locus")
+year2014<-rep(2014,times=24)
+MtBullerDf_2014$Year <- year2014
+MtBullerDf_2014
+```
+Mt Buller Heterozygosity in 2015.
+```{r}
+week_gene_2015 <- filter(week_gene_mtbuller,Year==2015)
+alleles_2015 <- week_gene_2015[,4:ncol(week_gene)]
+pop_geind_alleles_2015 <- seppop(df2genind(alleles_2015,sep="/",NA.char="NA/NA", pop=week_gene_2015$Pop))
+MtBuller_2015 <- summary(pop_geind_alleles_2015$MtBuller)
+MtBullerDf_2015 <- data.frame(unlist(MtBuller_2015$Hobs), unlist(MtBuller_2015$Hexp))
+names(MtBullerDf_2015) <- c("Hobs", "Hexp")
+MtBullerDf_2015 <- tibble::rownames_to_column(MtBullerDf_2015, "Locus")
+year2015<-rep(2015,times=24)
+MtBullerDf_2015$Year <- year2015
+MtBullerDf_2015
+```
+```{r}
+MtBuller_Heterozygosity <- rbind(MtBullerDf_2010,MtBullerDf_2011,MtBullerDf_2012,MtBullerDf_2013,MtBullerDf_2014,MtBullerDf_2015)
+MtBuller_Heterozygosity
+```
+
+```{r}
+library(shiny)
+
+ui <- dashboardPage(
+  dashboardHeader(title = "MtBuller Heterozygosity by Locus"),
+  dashboardSidebar(disable = T),
+  dashboardBody(
+    fluidRow(
+      box(title = "Plot Options", width = 15,
+      selectInput("x", "Select Locus", choices = c("LOC1", "LOC2", "LOC3", "LOC4", "LOC5", "LOC6", "LOC7", "LOC8", "LOC9", "LOC10", "LOC11", "LOC12", "LOC13", "LOC14", "LOC15", "LOC16", "LOC17", "LOC18", "LOC19", "LOC20", "LOC21", "LOC22", "LOC23", "LOC24"), selected = "LOC1"),
+    box(title = "MtBuller Heterozygosity", width = 7,
+    plotOutput("plot", width = "700px", height = "600px")
+    ) 
+    ) 
+    )) )
+
+ 
+
+server <- function(input, output, session) {
+  output$plot <- renderPlot({
+    MtBuller_Heterozygosity %>% 
+      filter(Locus==input$x) %>% 
+      ggplot(aes(y=Hobs, x=Year)) +
+      geom_col(color="black", fill= "cyan3", alpha=0.6) + 
+      theme_light(base_size = 18) + 
+      theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
+      labs(x = "Year",
+          y = "Heterozygosity")
+  })
+  session$onSessionEnded(stopApp)
+  }
+
+
+shinyApp(ui, server)
+```
+
+
+ 
+
+
 
 
 
